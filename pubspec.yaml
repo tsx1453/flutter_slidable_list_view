@@ -1,8 +1,8 @@
 name: flutter_slidable_list_view
-description: a item slidable listView
-version: 0.0.1
-author:
-homepage:
+description: a item slidable listView,learning from flutter_slidable(https://pub.dev/packages/flutter_slidable),wrote some code that suits me.
+version: 0.0.2
+author: BugWriterTian <1453918362@qq.com>
+homepage: https://github.com/tsx1453
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
