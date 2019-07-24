@@ -1,0 +1,2 @@
+const DEFAULT_INDEX_IN_LIST = -2;
+const DEFAULT_SLIDING_INDEX = -1;
