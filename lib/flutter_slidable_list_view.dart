@@ -1,7 +1,5 @@
 library flutter_slidable_list_view;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'package:flutter_slidable_list_view/widgets/slide_list.dart';
+export 'package:flutter_slidable_list_view/support/base_def.dart';
+export 'package:flutter_slidable_list_view/widgets/action_widgets.dart';
