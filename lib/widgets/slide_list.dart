@@ -6,9 +6,9 @@ import 'action_widgets.dart';
 
 class SlideListView extends StatefulWidget {
   final List dataList;
-  final Color backgroundColor;
-  final bool supportElasticity;
   final double slideProportion;
+  final Color itemBackgroundColor;
+  final bool supportElasticSliding;
   final Duration animationDuration;
   final RefreshCallback refreshCallback;
   final IndexedWidgetBuilder itemBuilder;
@@ -25,8 +25,8 @@ class SlideListView extends StatefulWidget {
       this.animationDuration =
           const Duration(milliseconds: DEFAULT_ANIMATION_DURATION_MILLISECONDS),
       this.slideProportion = DEFAULT_PROPORTION,
-      this.supportElasticity = true,
-      this.backgroundColor = Colors.white,
+      this.supportElasticSliding = true,
+      this.itemBackgroundColor = Colors.white,
       this.refreshCallback,
       this.refreshWidgetBuilder})
       : assert(itemBuilder != null),
@@ -99,8 +99,8 @@ class SlideListViewState extends State<SlideListView> {
           widget.dataList.removeAt(removeIndex);
         });
       },
-      supportElasticity: widget.supportElasticity,
-      backgroundColor: widget.backgroundColor,
+      supportElasticity: widget.supportElasticSliding,
+      backgroundColor: widget.itemBackgroundColor,
       animationDuration: widget.animationDuration,
       slideProportion: widget.slideProportion,
     );
