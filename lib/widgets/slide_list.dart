@@ -13,7 +13,7 @@ class SlideListView extends StatefulWidget {
   final RefreshCallback refreshCallback;
   final IndexedWidgetBuilder itemBuilder;
   final IndexedWidgetBuilder separatorBuilder;
-  final ActionWidgetDelegate actionWidgetBuilder;
+  final ActionWidgetDelegate actionWidgetDelegate;
   final RefreshWidgetBuilder refreshWidgetBuilder;
 
   const SlideListView(
@@ -21,7 +21,7 @@ class SlideListView extends StatefulWidget {
       @required this.itemBuilder,
       this.separatorBuilder,
       @required this.dataList,
-      @required this.actionWidgetBuilder,
+      @required this.actionWidgetDelegate,
       this.animationDuration =
           const Duration(milliseconds: DEFAULT_ANIMATION_DURATION_MILLISECONDS),
       this.slideProportion = DEFAULT_PROPORTION,
@@ -31,7 +31,7 @@ class SlideListView extends StatefulWidget {
       this.refreshWidgetBuilder})
       : assert(itemBuilder != null),
         assert(dataList != null),
-        assert(actionWidgetBuilder != null),
+        assert(actionWidgetDelegate != null),
         super(key: key);
 
   @override
@@ -81,7 +81,7 @@ class SlideListViewState extends State<SlideListView> {
 
   Widget _itemBuilder(BuildContext context, int index) {
     return SlideItem(
-      actionWidgetBuilder: widget.actionWidgetBuilder,
+      actionWidgetDelegate: widget.actionWidgetDelegate,
       content: widget.itemBuilder(context, index),
       indexInList: index,
       slideBeginCallback: (slideIndex) {

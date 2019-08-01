@@ -95,20 +95,31 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
-              onTap: (){
+              onTap: () {
                 print('tap ${data[index]}');
               },
               behavior: HitTestBehavior.translucent,
             );
           },
-          actionWidgetBuilder: ActionWidgetDelegate(1, (index) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[Icon(Icons.delete), Text('delete')],
-            );
+          actionWidgetDelegate: ActionWidgetDelegate(2, (index) {
+            if (index == 0) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[Icon(Icons.delete), Text('delete')],
+              );
+            } else {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[Icon(Icons.close), Text('close')],
+              );
+            }
           }, (int indexInList, int index, BaseSlideItem item) {
-            item.remove();
-          }, [Colors.redAccent]),
+            if (index == 0) {
+              item.remove();
+            } else {
+              item.close();
+            }
+          }, [Colors.redAccent, Colors.blueAccent]),
           dataList: data,
           refreshCallback: () async {
             await Future.delayed(Duration(seconds: 2));

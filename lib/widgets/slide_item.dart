@@ -13,7 +13,7 @@ class SlideItem extends StatefulWidget {
   final IndexCallback slideBeginCallback;
   final IndexCallback slideUpdateCallback;
   final IndexCallback itemRemoveCallback;
-  final ActionWidgetDelegate actionWidgetBuilder;
+  final ActionWidgetDelegate actionWidgetDelegate;
 
   const SlideItem(
       {Key key,
@@ -21,7 +21,7 @@ class SlideItem extends StatefulWidget {
       this.indexInList,
       this.slideBeginCallback,
       this.slideUpdateCallback,
-      this.actionWidgetBuilder,
+      this.actionWidgetDelegate,
       this.animationDuration,
       this.slideProportion,
       this.supportElasticity,
@@ -56,7 +56,7 @@ class SlideItemState extends State<SlideItem>
 
   /// 侧滑按钮的个数
   int get actionCount {
-    return widget.actionWidgetBuilder.actionCount;
+    return widget.actionWidgetDelegate.actionCount;
   }
 
   /// 实际滑动的距离（即滑动打开侧滑菜单之后会停留的宽度）
@@ -82,7 +82,7 @@ class SlideItemState extends State<SlideItem>
 
   /// 获取实际的滑动距离与item宽度的比例
   double get trueSlideProportion {
-    return widget.slideProportion * widget.actionWidgetBuilder.actionCount;
+    return widget.slideProportion * widget.actionWidgetDelegate.actionCount;
   }
 
   @override
@@ -217,7 +217,7 @@ class SlideItemState extends State<SlideItem>
                       nowSlidingIndex != -1 || _slideController.value != 0,
                   animation: translateAnimation,
                   child: widget.content,
-                  action: widget.actionWidgetBuilder.buildActions(
+                  action: widget.actionWidgetDelegate.buildActions(
                       // 当划到设置的标准滑动宽度(trueSlideWidth)时，如果开启了弹性滑动，那么应该一起更新Action的宽度
                       constraints.maxWidth *
                           (widget.slideProportion > singleActionAnimationWidth

@@ -19,4 +19,29 @@ The usage of this Widget is similar to that of ListView.
           dataList: $data_list,
         )
 ```
-## to be continued...
+## Preview
+![](img/screen_record.gif)
+## Parameter Description
+> SlideListView
+
+|       parameter       |                             type                             |                     description                      |    default value    |
+| :-------------------: | :----------------------------------------------------------: | :--------------------------------------------------: | :-----------------: |
+|       dataList        |                           List<E>                            |                    the list data                     | no default,required |
+|    slideProportion    |                            double                            |        this value determine the action width         |        0.25         |
+|  itemBackgroundColor  |                            Color                             | the list item background color,don't use Transparent |        white        |
+| supportElasticSliding |                             bool                             |         has elasticsliding effict when slide         |        true         |
+|   animationDuration   |                           Duration                           |                the animation duration                |       200 ms        |
+|    refreshCallback    |                   Future<void> Function()                    |        if null,list dont support swip refresh        |        null         |
+|      itemBuilder      |       Widget Function(BuildContext context, int index)       |                 build the list item                  |      required       |
+|   separatorBuilder    |       Widget Function(BuildContext context, int index)       |               build the list separator               | Divider(height: 1)  |
+| actionWidgetDelegate  |                     ActionWidgetDelegate                     |               build the action widget                |      required       |
+| refreshWidgetBuilder  | Widget Function( Widget content, RefreshCallback refreshCallback) |      you can use your custom refresh indicator       |  RefreshIndicator   |
+> ActionWidgetDelegate
+
+|       parameter        |                           type                           |                         description                          | default value |
+| :--------------------: | :------------------------------------------------------: | :----------------------------------------------------------: | :-----------: |
+|      actionCount       |                           int                            |                   the actionButton's count                   |   required    |
+|     actionBuilder      |                Widget Function(int index)                |                   build the action button                    |   required    |
+|     clickCallback      | Function(int indexInList, int index, BaseSlideItem item) |                     handle click action                      |     null      |
+| actionBackgroundColors |                       List<Color>                        | given the action button background color(this list's length must same with actionCount) |     null      |
+
