@@ -125,12 +125,6 @@ class _MyHomePageState extends State<MyHomePage> {
             await Future.delayed(Duration(seconds: 2));
             return;
           },
-          refreshWidgetBuilder: (Widget content, RefreshCallback callback) {
-            return RefreshIndicator(
-              child: content,
-              onRefresh: callback,
-            );
-          },
         ),
       ),
       floatingActionButton: FloatingActionButton(

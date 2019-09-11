@@ -6,6 +6,8 @@ import 'action_widgets.dart';
 
 class SlideListView extends StatefulWidget {
   final List dataList;
+  final bool needLoadMore;
+  final EdgeInsets padding;
   final double slideProportion;
   final Color itemBackgroundColor;
   final bool supportElasticSliding;
@@ -28,7 +30,8 @@ class SlideListView extends StatefulWidget {
       this.supportElasticSliding = true,
       this.itemBackgroundColor = Colors.white,
       this.refreshCallback,
-      this.refreshWidgetBuilder})
+      this.refreshWidgetBuilder,
+      this.needLoadMore = false, this.padding})
       : assert(itemBuilder != null),
         assert(dataList != null),
         assert(actionWidgetDelegate != null),
@@ -52,8 +55,11 @@ class SlideListViewState extends State<SlideListView> {
               ? AlwaysScrollableScrollPhysics()
               : NeverScrollableScrollPhysics(),
           itemBuilder: _itemBuilder,
+          padding: widget.padding,
           separatorBuilder: _separatorBuilder,
-          itemCount: widget.dataList.length),
+          itemCount: widget.needLoadMore
+              ? widget.dataList.length + 1
+              : widget.dataList.length),
     );
     return widget.refreshCallback != null
         ? _buildRefreshContent(content)
@@ -73,16 +79,22 @@ class SlideListViewState extends State<SlideListView> {
                 : NeverScrollableScrollPhysics(),
             itemBuilder: _itemBuilder,
             separatorBuilder: _separatorBuilder,
-            itemCount: widget.dataList.length),
+            itemCount: widget.needLoadMore
+                ? widget.dataList.length + 1
+                : widget.dataList.length),
       ),
       onRefresh: widget.refreshCallback,
     );
   }
 
   Widget _itemBuilder(BuildContext context, int index) {
+    Widget content = widget.itemBuilder(context, index);
+    if (content is UnSlidableWrapper) {
+      return content;
+    }
     return SlideItem(
       actionWidgetDelegate: widget.actionWidgetDelegate,
-      content: widget.itemBuilder(context, index),
+      content: content,
       indexInList: index,
       slideBeginCallback: (slideIndex) {
         setState(() {

@@ -322,3 +322,14 @@ class _SlideItemContainer extends StatelessWidget {
     );
   }
 }
+
+class UnSlidableWrapper extends StatelessWidget {
+  final Widget content;
+
+  const UnSlidableWrapper({Key key, this.content}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return content;
+  }
+}
