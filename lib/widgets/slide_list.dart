@@ -12,6 +12,7 @@ class SlideListView extends StatefulWidget {
   final Color itemBackgroundColor;
   final bool supportElasticSliding;
   final Duration animationDuration;
+  final ScrollController controller;
   final RefreshCallback refreshCallback;
   final IndexedWidgetBuilder itemBuilder;
   final IndexedWidgetBuilder separatorBuilder;
@@ -31,7 +32,9 @@ class SlideListView extends StatefulWidget {
       this.itemBackgroundColor = Colors.white,
       this.refreshCallback,
       this.refreshWidgetBuilder,
-      this.needLoadMore = false, this.padding})
+      this.needLoadMore = false,
+      this.padding,
+      this.controller})
       : assert(itemBuilder != null),
         assert(dataList != null),
         assert(actionWidgetDelegate != null),
@@ -51,6 +54,7 @@ class SlideListViewState extends State<SlideListView> {
     Widget content = SlidingIndexData(
       slidingIndex,
       child: ListView.separated(
+          controller: widget.controller,
           physics: slidingIndex == DEFAULT_SLIDING_INDEX
               ? AlwaysScrollableScrollPhysics()
               : NeverScrollableScrollPhysics(),

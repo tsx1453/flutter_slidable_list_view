@@ -9,3 +9,4 @@
 ## [1.2.4] - add UnSlidableWidget to make some item not slide when touch 
 ## [1.2.5] - when dataList'length change, list will jump to top <-- bug fixed
 ## [1.2.6] - support listView padding
+## [1.2.7] - add ScrollController support
