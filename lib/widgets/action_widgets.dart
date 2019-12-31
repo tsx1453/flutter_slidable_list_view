@@ -12,20 +12,20 @@ class ActionWidgetDelegate {
       : assert(actionBackgroundColors != null),
         assert(actionBackgroundColors.length == actionCount);
 
-  Widget buildActions(double width, BaseSlideItem item) {
+  Widget buildActions(double width, BaseSlideItem item, int indexInList) {
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: List.generate(actionCount, (index) {
+      children: List.generate(actionCount, (actionIndex) {
         return GestureDetector(
           child: Container(
             width: width,
             alignment: Alignment.center,
-            color: actionBackgroundColors[index],
-            child: actionBuilder(index),
+            color: actionBackgroundColors[actionIndex],
+            child: actionBuilder(actionIndex, indexInList),
           ),
           onTap: () async {
             if (clickCallback != null) {
-              clickCallback(item.indexInList, index, item);
+              clickCallback(item.indexInList, actionIndex, item);
             }
           },
         );

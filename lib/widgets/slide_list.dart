@@ -13,6 +13,7 @@ class SlideListView extends StatefulWidget {
   final bool supportElasticSliding;
   final Duration animationDuration;
   final ScrollController controller;
+  final OnGestureEnd onGestureEnd;
   final RefreshCallback refreshCallback;
   final IndexedWidgetBuilder itemBuilder;
   final IndexedWidgetBuilder separatorBuilder;
@@ -34,7 +35,8 @@ class SlideListView extends StatefulWidget {
       this.refreshWidgetBuilder,
       this.needLoadMore = false,
       this.padding,
-      this.controller})
+      this.controller,
+      this.onGestureEnd})
       : assert(itemBuilder != null),
         assert(dataList != null),
         assert(actionWidgetDelegate != null),
@@ -119,6 +121,7 @@ class SlideListViewState extends State<SlideListView> {
       backgroundColor: widget.itemBackgroundColor,
       animationDuration: widget.animationDuration,
       slideProportion: widget.slideProportion,
+      onGestureEnd: widget.onGestureEnd,
     );
   }
 

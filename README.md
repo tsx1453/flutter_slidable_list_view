@@ -36,12 +36,13 @@ The usage of this Widget is similar to that of ListView.
 |   separatorBuilder    |       Widget Function(BuildContext context, int index)       |               build the list separator               | Divider(height: 1)  |
 | actionWidgetDelegate  |                     ActionWidgetDelegate                     |               build the action widget                |      required       |
 | refreshWidgetBuilder  | Widget Function( Widget content, RefreshCallback refreshCallback) |      you can use your custom refresh indicator       |  RefreshIndicator   |
+|onGestureEnd|void Function(DragEndDetails detail, double itemWidth,double translateValue, Function openF, Function closeF)|determine when to close or open action on gesture end|null|
 > ActionWidgetDelegate
 
 |       parameter        |                           type                           |                         description                          | default value |
 | :--------------------: | :------------------------------------------------------: | :----------------------------------------------------------: | :-----------: |
 |      actionCount       |                           int                            |                   the actionButton's count                   |   required    |
-|     actionBuilder      |                Widget Function(int index)                |                   build the action button                    |   required    |
+|     actionBuilder      |                Widget Function(int actionIndex, int indexInList)                |                   build the action button                    |   required    |
 |     clickCallback      | Function(int indexInList, int index, BaseSlideItem item) |                     handle click action                      |     null      |
 | actionBackgroundColors |                       List<Color>                        | given the action button background color(this list's length must same with actionCount) |     null      |
 

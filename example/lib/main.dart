@@ -101,8 +101,9 @@ class _MyHomePageState extends State<MyHomePage> {
               behavior: HitTestBehavior.translucent,
             );
           },
-          actionWidgetDelegate: ActionWidgetDelegate(2, (index) {
-            if (index == 0) {
+          actionWidgetDelegate:
+              ActionWidgetDelegate(2, (actionIndex, listIndex) {
+            if (actionIndex == 0) {
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[Icon(Icons.delete), Text('delete')],
@@ -110,7 +111,10 @@ class _MyHomePageState extends State<MyHomePage> {
             } else {
               return Column(
                 mainAxisSize: MainAxisSize.min,
-                children: <Widget>[Icon(Icons.close), Text('close')],
+                children: <Widget>[
+                  listIndex > 5 ? Icon(Icons.close) : Icon(Icons.adjust),
+                  Text('close')
+                ],
               );
             }
           }, (int indexInList, int index, BaseSlideItem item) {

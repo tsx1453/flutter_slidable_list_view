@@ -7,7 +7,7 @@ const double DEFAULT_ELASTICITY_VALUE = 0.1;
 const double DEFAULT_PROPORTION = 0.25;
 
 typedef IndexCallback = void Function(int index);
-typedef ActionBuilder = Widget Function(int index);
+typedef ActionBuilder = Widget Function(int actionIndex, int indexInList);
 typedef ActionClickCallback = void Function(
     int indexInList, int index, BaseSlideItem item);
 typedef RefreshWidgetBuilder = Widget Function(

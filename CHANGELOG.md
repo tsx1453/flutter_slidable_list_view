@@ -10,3 +10,4 @@
 ## [1.2.5] - when dataList'length change, list will jump to top <-- bug fixed
 ## [1.2.6] - support listView padding
 ## [1.2.7] - add ScrollController support
+## [1.2.8] - support custom action for each item;support custom open or close on gesture end

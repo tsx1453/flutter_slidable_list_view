@@ -3,12 +3,16 @@ import 'inherited_widgets.dart';
 import 'package:flutter_slidable_list_view/support/base_def.dart';
 import 'action_widgets.dart';
 
+typedef OnGestureEnd = void Function(DragEndDetails detail, double itemWidth,
+    double translateValue, Function openF, Function closeF);
+
 class SlideItem extends StatefulWidget {
   final Widget content;
   final int indexInList;
   final bool supportElasticity;
   final double slideProportion;
   final Color backgroundColor;
+  final OnGestureEnd onGestureEnd;
   final Duration animationDuration;
   final IndexCallback slideBeginCallback;
   final IndexCallback slideUpdateCallback;
@@ -26,7 +30,8 @@ class SlideItem extends StatefulWidget {
       this.slideProportion,
       this.supportElasticity,
       this.itemRemoveCallback,
-      this.backgroundColor})
+      this.backgroundColor,
+      this.onGestureEnd})
       : super(key: key);
 
   @override
@@ -223,7 +228,8 @@ class SlideItemState extends State<SlideItem>
                           (widget.slideProportion > singleActionAnimationWidth
                               ? widget.slideProportion
                               : singleActionAnimationWidth),
-                      this),
+                      this,
+                      indexInList),
                   backgroundColor: widget.backgroundColor,
                 );
               },
@@ -272,10 +278,17 @@ class SlideItemState extends State<SlideItem>
   }
 
   _handleDragEnd(DragEndDetails detail) {
-    if (translateValue > itemWidth * -0.04 && translateValue != 0) {
-      close();
-    } else if (translateValue < itemWidth * -0.04) {
-      open();
+    if (widget.onGestureEnd != null) {
+      widget.onGestureEnd(detail, itemWidth, translateValue, open, close);
+    } else {
+      if (translateValue.abs() <
+              (itemWidth * trueSlideProportion / 2.0).abs() &&
+          translateValue != 0) {
+        close();
+      } else if (translateValue.abs() >
+          (itemWidth * trueSlideProportion / 2.0).abs()) {
+        open();
+      }
     }
   }
 }
