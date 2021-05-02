@@ -6,17 +6,17 @@ const int DEFAULT_ANIMATION_DURATION_MILLISECONDS = 200;
 const double DEFAULT_ELASTICITY_VALUE = 0.1;
 const double DEFAULT_PROPORTION = 0.25;
 
-typedef IndexCallback = void Function(int index);
-typedef ActionBuilder = Widget Function(int actionIndex, int indexInList);
+typedef IndexCallback = void Function(int? index);
+typedef ActionBuilder = Widget Function(int actionIndex, int? indexInList);
 typedef ActionClickCallback = void Function(
-    int indexInList, int index, BaseSlideItem item);
+    int? indexInList, int index, BaseSlideItem item);
 typedef RefreshWidgetBuilder = Widget Function(
-    Widget content, RefreshCallback refreshCallback);
+    Widget content, RefreshCallback? refreshCallback);
 
 abstract class BaseSlideItem {
-  int get indexInList;
+  int? get indexInList;
 
-  void close({bool fromSelf});
+  void close({bool? fromSelf});
 
   void open();
 
@@ -28,34 +28,34 @@ abstract class CloseListener extends BaseSlideItem {
 }
 
 class CloseNotifyManager {
-  factory CloseNotifyManager() => _getInstance();
+  factory CloseNotifyManager() => _getInstance()!;
 
-  static CloseNotifyManager get instance => _getInstance();
+  static CloseNotifyManager? get instance => _getInstance();
 
-  static CloseNotifyManager _instance;
+  static CloseNotifyManager? _instance;
 
   CloseNotifyManager._internal();
 
-  static CloseNotifyManager _getInstance() {
+  static CloseNotifyManager? _getInstance() {
     if (_instance == null) {
       _instance = CloseNotifyManager._internal();
     }
     return _instance;
   }
 
-  List<CloseListener> _listeners = List();
+  List<CloseListener> _listeners = [];
 
   void notify() {
-    _listeners?.forEach((it) {
+    _listeners.forEach((it) {
       it.close(fromSelf: false);
     });
   }
 
   void addListener(CloseListener listener) {
-    _listeners?.add(listener);
+    _listeners.add(listener);
   }
 
   void removeListener(CloseListener listener) {
-    _listeners?.remove(listener);
+    _listeners.remove(listener);
   }
 }

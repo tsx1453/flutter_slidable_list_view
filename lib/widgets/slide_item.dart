@@ -7,20 +7,20 @@ typedef OnGestureEnd = void Function(DragEndDetails detail, double itemWidth,
     double translateValue, Function openF, Function closeF);
 
 class SlideItem extends StatefulWidget {
-  final Widget content;
-  final int indexInList;
-  final bool supportElasticity;
-  final double slideProportion;
-  final Color backgroundColor;
-  final OnGestureEnd onGestureEnd;
-  final Duration animationDuration;
-  final IndexCallback slideBeginCallback;
-  final IndexCallback slideUpdateCallback;
-  final IndexCallback itemRemoveCallback;
-  final ActionWidgetDelegate actionWidgetDelegate;
+  final Widget? content;
+  final int? indexInList;
+  final bool? supportElasticity;
+  final double? slideProportion;
+  final Color? backgroundColor;
+  final OnGestureEnd? onGestureEnd;
+  final Duration? animationDuration;
+  final IndexCallback? slideBeginCallback;
+  final IndexCallback? slideUpdateCallback;
+  final IndexCallback? itemRemoveCallback;
+  final ActionWidgetDelegate? actionWidgetDelegate;
 
   const SlideItem(
-      {Key key,
+      {Key? key,
       this.content,
       this.indexInList,
       this.slideBeginCallback,
@@ -46,13 +46,13 @@ class SlideItemState extends State<SlideItem>
   bool _needRemove = false;
   double translateValue = 0;
 
-  AnimationController _slideController;
-  AnimationController _dismissController;
+  AnimationController? _slideController;
+  late AnimationController _dismissController;
 
-  Animation<double> _slideAnimation;
-  Animation<double> _dismissAnimation;
+  late Animation<double> _slideAnimation;
+  late Animation<double> _dismissAnimation;
 
-  Size _size;
+  Size? _size;
 
   /// 获取当前正在滑动的Item的位置
   int get nowSlidingIndex {
@@ -61,33 +61,33 @@ class SlideItemState extends State<SlideItem>
 
   /// 侧滑按钮的个数
   int get actionCount {
-    return widget.actionWidgetDelegate.actionCount;
+    return widget.actionWidgetDelegate!.actionCount;
   }
 
   /// 实际滑动的距离（即滑动打开侧滑菜单之后会停留的宽度）
   double get trueSlideWidth {
-    return -context.size.width * trueSlideProportion;
+    return -context.size!.width * trueSlideProportion;
   }
 
   /// 最大滑动宽度（弹性滑动打开时会比实际滑动距离大）
   double get maxSlideWidth {
-    return -context.size.width * maxSlideProportion;
+    return -context.size!.width * maxSlideProportion;
   }
 
   double get itemWidth {
-    return context.size.width;
+    return context.size!.width;
   }
 
   /// 当弹性滑动（拉到标准宽度以后继续减速滑动）打开时，可额外减速滑动一部分距离
   double get maxSlideProportion {
-    return widget.supportElasticity
-        ? (widget.slideProportion + DEFAULT_ELASTICITY_VALUE) * actionCount
+    return widget.supportElasticity!
+        ? (widget.slideProportion! + DEFAULT_ELASTICITY_VALUE) * actionCount
         : trueSlideProportion;
   }
 
   /// 获取实际的滑动距离与item宽度的比例
   double get trueSlideProportion {
-    return widget.slideProportion * widget.actionWidgetDelegate.actionCount;
+    return widget.slideProportion! * widget.actionWidgetDelegate!.actionCount;
   }
 
   @override
@@ -99,16 +99,16 @@ class SlideItemState extends State<SlideItem>
   }
 
   @override
-  int get indexInList => widget.indexInList;
+  int? get indexInList => widget.indexInList;
 
   @override
-  void close({bool fromSelf = true}) {
-    if (!fromSelf && !isSelf()) {
+  void close({bool? fromSelf = true}) {
+    if (!fromSelf! && !isSelf()) {
       return;
     }
-    _slideController.fling(velocity: -1).whenComplete(() {
+    _slideController!.fling(velocity: -1).whenComplete(() {
       translateValue = 0;
-      widget.slideUpdateCallback(DEFAULT_SLIDING_INDEX);
+      widget.slideUpdateCallback!(DEFAULT_SLIDING_INDEX);
     });
   }
 
@@ -119,7 +119,7 @@ class SlideItemState extends State<SlideItem>
 
   @override
   void open() {
-    _slideController
+    _slideController!
         .animateTo(trueSlideWidth.abs() / itemWidth,
             curve: Curves.easeIn, duration: widget.animationDuration)
         .whenComplete(() {
@@ -137,10 +137,10 @@ class SlideItemState extends State<SlideItem>
       setState(() {
         _needRemove = false;
         translateValue = 0;
-        _slideController.value = 0;
+        _slideController!.value = 0;
       });
-      widget.slideUpdateCallback(DEFAULT_SLIDING_INDEX);
-      widget.itemRemoveCallback(indexInList);
+      widget.slideUpdateCallback!(DEFAULT_SLIDING_INDEX);
+      widget.itemRemoveCallback!(indexInList);
     });
   }
 
@@ -154,7 +154,7 @@ class SlideItemState extends State<SlideItem>
   @override
   void dispose() {
     CloseNotifyManager().removeListener(this);
-    _slideController.dispose();
+    _slideController!.dispose();
     _dismissController.dispose();
     super.dispose();
   }
@@ -162,11 +162,11 @@ class SlideItemState extends State<SlideItem>
   @override
   void didUpdateWidget(SlideItem oldWidget) {
     super.didUpdateWidget(oldWidget);
-    WidgetsBinding.instance.addPostFrameCallback(_onAfterRender);
+    WidgetsBinding.instance!.addPostFrameCallback(_onAfterRender);
   }
 
   _onAfterRender(Duration timeStamp) {
-    _size = context?.size;
+    _size = context.size;
   }
 
   _slideUpdate() {
@@ -181,7 +181,7 @@ class SlideItemState extends State<SlideItem>
         AnimationController(vsync: this, duration: widget.animationDuration)
           ..addListener(_slideUpdate);
     _slideAnimation = CurvedAnimation(
-        parent: _slideController, curve: Interval(0.0, maxSlideProportion));
+        parent: _slideController!, curve: Interval(0.0, maxSlideProportion));
     _dismissController =
         AnimationController(vsync: this, duration: widget.animationDuration);
     _dismissAnimation = Tween(begin: 1.0, end: 0.0).animate(
@@ -219,14 +219,14 @@ class SlideItemState extends State<SlideItem>
                     translateAnimation.value.dx.abs() / actionCount;
                 return _SlideItemContainer(
                   absorbing:
-                      nowSlidingIndex != -1 || _slideController.value != 0,
+                      nowSlidingIndex != -1 || _slideController!.value != 0,
                   animation: translateAnimation,
                   child: widget.content,
-                  action: widget.actionWidgetDelegate.buildActions(
+                  action: widget.actionWidgetDelegate!.buildActions(
                       // 当划到设置的标准滑动宽度(trueSlideWidth)时，如果开启了弹性滑动，那么应该一起更新Action的宽度
                       constraints.maxWidth *
-                          (widget.slideProportion > singleActionAnimationWidth
-                              ? widget.slideProportion
+                          (widget.slideProportion! > singleActionAnimationWidth
+                              ? widget.slideProportion!
                               : singleActionAnimationWidth),
                       this,
                       indexInList),
@@ -254,32 +254,32 @@ class SlideItemState extends State<SlideItem>
   }
 
   _handleDragStart(DragStartDetails detail) {
-    if (_slideController.value == 0 || translateValue != trueSlideWidth) {
+    if (_slideController!.value == 0 || translateValue != trueSlideWidth) {
       translateValue = 0;
     }
-    if (_slideController.isAnimating) {
-      _slideController.stop();
+    if (_slideController!.isAnimating) {
+      _slideController!.stop();
     }
-    widget.slideBeginCallback(indexInList);
+    widget.slideBeginCallback!(indexInList);
   }
 
   _handleDragUpdate(DragUpdateDetails detail) {
-    double newValue = translateValue + detail.primaryDelta;
+    double newValue = translateValue + detail.primaryDelta!;
     if (newValue < trueSlideWidth) {
       translateValue +=
-          (1 - newValue.abs() / maxSlideWidth.abs()) * detail.primaryDelta;
+          (1 - newValue.abs() / maxSlideWidth.abs()) * detail.primaryDelta!;
     } else {
-      translateValue += detail.primaryDelta;
+      translateValue += detail.primaryDelta!;
     }
     translateValue = translateValue > 0 ? 0 : translateValue;
     setState(() {
-      _slideController.value = translateValue.abs() / itemWidth;
+      _slideController!.value = translateValue.abs() / itemWidth;
     });
   }
 
   _handleDragEnd(DragEndDetails detail) {
     if (widget.onGestureEnd != null) {
-      widget.onGestureEnd(detail, itemWidth, translateValue, open, close);
+      widget.onGestureEnd!(detail, itemWidth, translateValue, open, close);
     } else {
       if (translateValue.abs() <
               (itemWidth * trueSlideProportion / 2.0).abs() &&
@@ -294,14 +294,14 @@ class SlideItemState extends State<SlideItem>
 }
 
 class _SlideItemContainer extends StatelessWidget {
-  final bool absorbing;
-  final Widget action;
-  final Widget child;
-  final Animation<Offset> animation;
-  final Color backgroundColor;
+  final bool? absorbing;
+  final Widget? action;
+  final Widget? child;
+  final Animation<Offset>? animation;
+  final Color? backgroundColor;
 
   const _SlideItemContainer(
-      {Key key,
+      {Key? key,
       this.absorbing,
       this.action,
       this.animation,
@@ -321,13 +321,13 @@ class _SlideItemContainer extends StatelessWidget {
             child: action,
           )),
           SlideTransition(
-            position: animation,
+            position: animation!,
             child: AbsorbPointer(
               child: Container(
                 color: backgroundColor ?? Colors.white,
                 child: child,
               ),
-              absorbing: absorbing,
+              absorbing: absorbing!,
             ),
           )
         ],
@@ -337,12 +337,12 @@ class _SlideItemContainer extends StatelessWidget {
 }
 
 class UnSlidableWrapper extends StatelessWidget {
-  final Widget content;
+  final Widget? content;
 
-  const UnSlidableWrapper({Key key, this.content}) : super(key: key);
+  const UnSlidableWrapper({Key? key, this.content}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return content;
+    return content!;
   }
 }

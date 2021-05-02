@@ -7,25 +7,25 @@ import 'action_widgets.dart';
 class SlideListView extends StatefulWidget {
   final List dataList;
   final bool needLoadMore;
-  final EdgeInsets padding;
+  final EdgeInsets? padding;
   final double slideProportion;
   final Color itemBackgroundColor;
   final bool supportElasticSliding;
   final Duration animationDuration;
-  final ScrollController controller;
-  final OnGestureEnd onGestureEnd;
-  final RefreshCallback refreshCallback;
+  final ScrollController? controller;
+  final OnGestureEnd? onGestureEnd;
+  final RefreshCallback? refreshCallback;
   final IndexedWidgetBuilder itemBuilder;
-  final IndexedWidgetBuilder separatorBuilder;
+  final IndexedWidgetBuilder? separatorBuilder;
   final ActionWidgetDelegate actionWidgetDelegate;
-  final RefreshWidgetBuilder refreshWidgetBuilder;
+  final RefreshWidgetBuilder? refreshWidgetBuilder;
 
   const SlideListView(
-      {Key key,
-      @required this.itemBuilder,
+      {Key? key,
+      required this.itemBuilder,
       this.separatorBuilder,
-      @required this.dataList,
-      @required this.actionWidgetDelegate,
+      required this.dataList,
+      required this.actionWidgetDelegate,
       this.animationDuration =
           const Duration(milliseconds: DEFAULT_ANIMATION_DURATION_MILLISECONDS),
       this.slideProportion = DEFAULT_PROPORTION,
@@ -37,10 +37,7 @@ class SlideListView extends StatefulWidget {
       this.padding,
       this.controller,
       this.onGestureEnd})
-      : assert(itemBuilder != null),
-        assert(dataList != null),
-        assert(actionWidgetDelegate != null),
-        super(key: key);
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -74,7 +71,7 @@ class SlideListViewState extends State<SlideListView> {
 
   Widget _buildRefreshContent(Widget content) {
     if (widget.refreshWidgetBuilder != null) {
-      return widget.refreshWidgetBuilder(content, widget.refreshCallback);
+      return widget.refreshWidgetBuilder!(content, widget.refreshCallback);
     }
     return RefreshIndicator(
       child: SlidingIndexData(
@@ -89,7 +86,7 @@ class SlideListViewState extends State<SlideListView> {
                 ? widget.dataList.length + 1
                 : widget.dataList.length),
       ),
-      onRefresh: widget.refreshCallback,
+      onRefresh: widget.refreshCallback!,
     );
   }
 
@@ -103,19 +100,22 @@ class SlideListViewState extends State<SlideListView> {
       content: content,
       indexInList: index,
       slideBeginCallback: (slideIndex) {
-        setState(() {
-          slidingIndex = slideIndex;
-        });
+        if (slideIndex != null)
+          setState(() {
+            slidingIndex = slideIndex;
+          });
       },
       slideUpdateCallback: (slideIndex) {
-        setState(() {
-          slidingIndex = slideIndex;
-        });
+        if (slideIndex != null)
+          setState(() {
+            slidingIndex = slideIndex;
+          });
       },
       itemRemoveCallback: (removeIndex) {
-        setState(() {
-          widget.dataList.removeAt(removeIndex);
-        });
+        if (removeIndex != null)
+          setState(() {
+            widget.dataList.removeAt(removeIndex);
+          });
       },
       supportElasticity: widget.supportElasticSliding,
       backgroundColor: widget.itemBackgroundColor,
@@ -127,7 +127,7 @@ class SlideListViewState extends State<SlideListView> {
 
   Widget _separatorBuilder(BuildContext context, int index) {
     if (widget.separatorBuilder != null) {
-      return widget.separatorBuilder(context, index);
+      return widget.separatorBuilder!(context, index);
     }
     return Divider(
       height: 1,

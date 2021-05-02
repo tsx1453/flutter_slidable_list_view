@@ -5,7 +5,7 @@ author: BugWriterTian <1453918362@qq.com>
 homepage: https://github.com/tsx1453/flutter_slidable_list_view
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:

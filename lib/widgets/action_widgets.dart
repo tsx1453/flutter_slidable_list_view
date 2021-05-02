@@ -9,10 +9,9 @@ class ActionWidgetDelegate {
 
   ActionWidgetDelegate(this.actionCount, this.actionBuilder, this.clickCallback,
       this.actionBackgroundColors)
-      : assert(actionBackgroundColors != null),
-        assert(actionBackgroundColors.length == actionCount);
+      : assert(actionBackgroundColors.length == actionCount);
 
-  Widget buildActions(double width, BaseSlideItem item, int indexInList) {
+  Widget buildActions(double width, BaseSlideItem item, int? indexInList) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: List.generate(actionCount, (actionIndex) {
@@ -24,9 +23,7 @@ class ActionWidgetDelegate {
             child: actionBuilder(actionIndex, indexInList),
           ),
           onTap: () async {
-            if (clickCallback != null) {
-              clickCallback(item.indexInList, actionIndex, item);
-            }
+            clickCallback(item.indexInList, actionIndex, item);
           },
         );
       }),
